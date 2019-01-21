@@ -11,19 +11,25 @@ class PostController {
     
     protected $conn;
     protected $Post;
-    public function __construct(PDO $conn) 
+
+    public function __construct()//(PDO $conn)
     {
-        $this->conn = $conn;
+        // check per vedere se la classe viene caricata e istanziata correttamente
+        echo "Post controller loaded correctly";
+
+        //$this->conn = $conn;
         
-        $this->Post = new Post($conn);
-       
+        //$this->Post = new Post($conn);
+        //echo __DIR__;
     }
 
     public function display()
     {
+        // carico il file di layout == this.layout
+
         require $this->layout;
     }
-    
+    /*
     public function getPosts(){
         
         $posts = $this->Post->all();
@@ -50,5 +56,5 @@ class PostController {
         $this->Post->save($_POST);
         redirect('/');
     }
-    
+    */
 }
