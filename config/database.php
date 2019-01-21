@@ -1,8 +1,8 @@
 <?php
 //PDO
 return[
-    'driver' => 'mysql', // può essere sqlite, mssql, oci
-    'host' => 'localhost',
+    'driver' => 'mssql', // può essere sqlite, mssql, oci
+    'host' => '161.',
     'user' => 'root',
     'password' => 'hidran',
     'database' => 'freeblog',
