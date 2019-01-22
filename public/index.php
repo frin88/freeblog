@@ -7,13 +7,16 @@
 // set current working directory
 chdir(dirname(__DIR__));
 
-//istanzio classe database
-require_once __DIR__ . '/../DB/DBPDO.php';
+//istanzio classi database ... abbiamo aggounto un layer in più per gestire diversi db... fast foward
+require_once __DIR__ . '/../db/DBPDO.php'; // crea effettivamente connessione
+require_once __DIR__.'/../db/DbFactory.php'; // crea connection string a seconda dei parametri di connessione
+$data = require 'config/database.php'; //leggo parametri di connessione
 
-$data = require 'config/database.php'; //leggo parametri di connessiona
-$pdoConn =App\DB\DBPDO::getInstance($data);// prendo istanza
+$pdoConn =App\DB\DbFactory::create($data);// dbFactory chiama DBDPO
 $conn = $pdoConn->getConn();// prendo connessione
 
+
+// query
 $stm = $conn->query('SELECT * FROM posts'); // eseguo query
 $result =$stm->fetchAll(PDO::FETCH_OBJ);
 var_dump($result);
