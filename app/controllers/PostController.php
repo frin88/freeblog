@@ -16,15 +16,24 @@ class PostController
     protected $conn;
     protected $Post;
 
-    public function __construct()//(PDO $conn)
+    public function __construct(PDO $conn)
     {
         // check per vedere se la classe viene caricata e istanziata correttamente
         //echo "Post controller loaded correctly";
 
-       // $this->conn = $conn;
+        $this->conn = $conn;
+
+        // query riempio posts
+        $posts = $this->conn->query('SELECT * FROM posts')->fetchAll(PDO::FETCH_OBJ);
+
+        ob_start();
+        require __DIR__ . '/../views/posts.tpl.php';
+        $this->content = ob_get_contents();
+        ob_end_clean();
+
 
         //$this->Post = new Post($conn);
-        //echo __DIR__;
+
     }
 
     public function display()
@@ -35,7 +44,7 @@ class PostController
         require $this->layout;
     }
 
-    public function show($postid)
+    public function show($postid = null) //default null
     {
         $message = "Frincola is the best";
         $title = "Best title ever";
