@@ -3,10 +3,17 @@ A small MVC framework implementing a front and page controller with routing
 
 
 #Config
---- Da aggiungere al file httpd.conf per virtual directory 
---https://michaelwhyte.ca/blog/create-an-alias-with-wamp
-<Directory "C:\wamp64\www\tutorial\minimvc\public">
-    AllowOverride None
-    Options None
-    Require all granted
-</Directory>
+ErrorDocument 404 /index.php in httpd.conf --> per fare redirect a home se l'url non esiste
+crea virtual host via wamp --> il risultato è questo (qui uso porta 8080 perchè altrimenti si picchia con iis)
+
+<VirtualHost 127.0.0.1:8080>
+	ServerName frinblog
+	DocumentRoot "c:/wamp64/www/minimvc/public"
+	<Directory  "c:/wamp64/www/minimvc/public">
+		Options +Indexes +Includes +FollowSymLinks +MultiViews
+		AllowOverride All
+		Require local
+	</Directory>
+</VirtualHost>
+
+Ricordati di mappare localhost 127.0.0.1 frinblog in host
