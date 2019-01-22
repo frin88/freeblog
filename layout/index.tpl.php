@@ -47,8 +47,8 @@
 
     <div class="container">
 
-    
-
+    <h1><?= $this->content?> <!--"?="shortcut per echo" html injection -->
+    </h1>
     </div><!-- /.container -->
 
 
