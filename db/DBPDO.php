@@ -9,27 +9,31 @@
 namespace App\DB;
 
 /**
- * Description of DBPDO
- *
- * @author Elio
+ * classe per creare connessione al database (pattern singleton)
  */
-class DBPDO {
+class DBPDO
+{
     protected $conn;
-    protected static $instance;
+    protected static $instance; //static proprietà della classe non dell'istanza
+
     public static function getInstance(array $options)
     {
-        if(!self::$instance){
+        //self invece di this perchè mi riferisco alla classe non all'istanza
+        if (!self::$instance) {
             self::$instance = new static ($options);
         }
         return static::$instance;
     }
-    
-    protected function __construct(array $options) {
+
+    protected function __construct(array $options)
+    {
+        // leggo da array
         $this->conn = new \PDO($options['dsn'], $options['user'], $options['password'], $options['pdooptions']);
     }
-    
-    public function getConn(){
+
+    public function getConn()
+    {
         return $this->conn;
     }
-    
+
 }

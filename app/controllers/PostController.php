@@ -10,7 +10,7 @@ class PostController
 {
 
     protected $layout = 'layout/index.tpl.php';
-    public $content = 'Frincola is the best';
+    public $content; //= 'Frincola is the best';
 
 
     protected $conn;
@@ -21,7 +21,7 @@ class PostController
         // check per vedere se la classe viene caricata e istanziata correttamente
         //echo "Post controller loaded correctly";
 
-        //$this->conn = $conn;
+       // $this->conn = $conn;
 
         //$this->Post = new Post($conn);
         //echo __DIR__;
@@ -29,7 +29,7 @@ class PostController
 
     public function display()
     {
-        // includo il file di layout == this.layout
+        // includo il file di layout idex.tpl
         // in index.tpl ho accesso a qualunque variabile settata in PostController --> il file index.tpl fa a tutti gli effetti
         //parte della classe, richiamerò gli oggetti della classe in index tramite $this
         require $this->layout;
@@ -42,14 +42,14 @@ class PostController
 
         //HTML INJECTION
 
-        // cattura gli echo e li salva in un buffer
+        // cattura gli echo e li salva in un buffer --> se non uso buffer e uso solo require il contenuto di post viene messo in testa
         ob_start();
         // includo la view post.tpl
         require __DIR__ . '/../views/post.tpl.php';
-        // prende il contenuto del buffer e lo mostra --> sto inettando il contenuto di post.tpl in layout
+        // prende il contenuto del buffer  lo associo a this.content e lo mostro --> sto inettando il contenuto di post.tpl in layout
         $this->content = ob_get_contents();
         // pulisce il buffer
-        ob_end_clean();
+        ob_end_clean(); // reset buffer
     }
 
     /*
