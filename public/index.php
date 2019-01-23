@@ -3,6 +3,7 @@
 //echo 'index loaded correctly ';
 //error_reporting(0); // non mostrare errori (per versione di prod)
 
+
 // set current working directory
 chdir(dirname(__DIR__));
 
@@ -17,21 +18,17 @@ try {
 
     $controller = new \App\Controllers\PostController((App\DB\DbFactory::create($data)->getConn())); // istanzio il controller con la connessione
 
-    // lo show va prima di display perchè è quello che carica i contenuti e li cattura con ob_start();
-    //$controller->show();
+    $controller->process();
     $controller->display();
-
 
 }
 catch(\PDOException $e){
     echo $e->getMessage();
 }
 
-// load PostController in index --> require genera fatal error se non trova il file (include genera un warning)
-//  se in pagina non ho errori ha caricato
 
 
-// istanzio la classe postController
+
 
 
 

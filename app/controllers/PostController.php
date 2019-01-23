@@ -10,7 +10,7 @@ class PostController
 {
 
     protected $layout = 'layout/index.tpl.php';
-    public $content; //= 'Frincola is the best';
+    public $content;
 
 
     protected $conn;
@@ -23,16 +23,7 @@ class PostController
 
         $this->conn = $conn;
 
-        // query riempio posts
-        $posts = $this->conn->query('SELECT * FROM posts')->fetchAll(PDO::FETCH_OBJ);
 
-        ob_start();
-        require __DIR__ . '/../views/posts.tpl.php';
-        $this->content = ob_get_contents();
-        ob_end_clean();
-
-
-        //$this->Post = new Post($conn);
 
     }
 
@@ -44,7 +35,70 @@ class PostController
         require $this->layout;
     }
 
-    public function show($postid = null) //default null
+    // get all Post
+    public  function getPosts()
+    {
+        // query riempio posts
+        $posts = $this->conn->query('SELECT * FROM posts')->fetchAll(PDO::FETCH_OBJ);
+
+        ob_start();
+        require __DIR__ . '/../views/posts.tpl.php';
+          $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
+    }
+
+    // show single post
+    public function show($postid)
+    {
+        $postid =(int)$postid;
+
+        $txtQuery = "SELECT * FROM posts where Id =".$postid;
+        $post = $this->conn->query($txtQuery)->fetchAll(PDO::FETCH_OBJ)[0];
+
+        ob_start();
+        require __DIR__ . '/../views/post.tpl.php';
+        $content = ob_get_contents();
+        var_dump($content);
+        ob_end_clean();
+        return $content;
+    }
+
+    public  function process()
+    {
+
+        $url = parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
+        $url = trim($url,'/');
+
+
+        $token= explode('/',$url);
+        //var_dump($token);
+
+       switch($token[0])
+       {
+           case 'posts':
+            // primo parametro classe seconso parametro callback
+            $this->content = call_user_func(array($this,'getPosts'));
+            break;
+           case 'post':
+               if($_SERVER['REQUEST_METHOD'] === 'GET')
+               {
+                 // echo 'qui';
+                   $this->content = call_user_func(array($this,'show'),$token[1]);
+               }
+               break;
+
+        }
+
+
+
+    }
+
+
+
+
+ /*  OLD VERSION
+  public function show($postid = null) //default null
     {
         $message = "Frincola is the best";
         $title = "Best title ever";
@@ -59,29 +113,6 @@ class PostController
         $this->content = ob_get_contents();
         // pulisce il buffer
         ob_end_clean(); // reset buffer
-    }
+    }*/
 
-    /*
-    public function getPosts(){
-        
-        $posts = $this->Post->all();
-        $this->content = view('posts', compact('posts'));
-    }
-    
-
-    
-    public function create()
-    {
-        return view('newPost');
-    }
-    
-    public function save()
-    {
-       // header("Content-type:application/json");
-       // echo json_encode($_POST);
-       // exit;
-        $this->Post->save($_POST);
-        redirect('/');
-    }
-    */
 }
