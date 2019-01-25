@@ -7,6 +7,7 @@ class Post {
     protected $conn;
     public function __construct(PDO $conn) {
         $this->conn = $conn;
+
     }
     public function all(){
         
@@ -22,6 +23,8 @@ class Post {
     public function find($id){
         
         $result = [];
+
+        // per fare query con "string format"
         $sql = 'SELECT * FROM posts WHERE id = :id';
         $stm = $this->conn->prepare($sql);
         $stm->execute(['id' => $id]);
@@ -36,7 +39,7 @@ class Post {
         
         $sql = 'INSERT INTO posts (email, title, message, datecreated)';
         $sql .= 'values(:email, :title, :message, :datecreated)';
-        
+
         $stm = $this->conn->prepare($sql);
         $stm->execute([
             'email' => $data['email'],

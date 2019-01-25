@@ -11,15 +11,21 @@ chdir(dirname(__DIR__));
 require_once __DIR__ . '/../db/DBPDO.php'; // crea effettivamente connessione
 require_once __DIR__.'/../db/DbFactory.php'; // crea connection string a seconda dei parametri di connessione
 require_once __DIR__ . '/../app/controllers/PostController.php';
+require_once __DIR__ . '/../app/models/Post.php';
+require_once __DIR__.'/../helpers/functions.php';
+
 
 $data = require 'config/database.php'; //leggo parametri di connessione
 
 try {
 
+
     $controller = new \App\Controllers\PostController((App\DB\DbFactory::create($data)->getConn())); // istanzio il controller con la connessione
 
-    $controller->process();
+    $controller->dispatch();
     $controller->display();
+
+
 
 }
 catch(\PDOException $e){
