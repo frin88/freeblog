@@ -36,7 +36,8 @@ class Post {
     }
     
     public function save(array $data = []){
-        
+
+       // var_dump($data);
         $sql = 'INSERT INTO posts (email, title, message, datecreated)';
         $sql .= 'values(:email, :title, :message, :datecreated)';
 

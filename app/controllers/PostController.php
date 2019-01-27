@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use function Couchbase\defaultDecoder;
 use \PDO;
 use App\Models\Post;
 
@@ -68,8 +69,19 @@ class PostController
 
     public function save()
     {
+      // echo 'save!';
+       $this->Post->save($_POST);
 
+  /*      header("Content-type:application/json");
+        echo json_encode($_POST);
+        exit;*/
     }
+
+    public function update()
+    {
+        return 'update';
+    }
+
 
     public function dispatch()
     {
@@ -84,6 +96,7 @@ class PostController
         $token2 = isset($tokens[1]) ? $tokens[1] : '';
 
         switch ($action) {
+
             case 'posts':
             case '':
             case 'home':
@@ -99,6 +112,7 @@ class PostController
 
                 break;
             case 'post':
+
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                     if (is_numeric($token2)) {
@@ -109,16 +123,41 @@ class PostController
                         if (method_exists($this, $token2)) {
                             //$this->content = $this->create();
                             $this->content = $this->{$token2}(); // chiamo il metodo passandogli il nome as string
-                        } else {
+
+                        } /*else {
                             $this->content = '<h1> Ooops something went wrong on ' . $token2 . '</h1>';
-                        }
+                        }*/
 
 
                     }
-
-
                 }
+                else if($_SERVER['REQUEST_METHOD'] === 'POST')
+                {
+
+                    if (is_numeric($token2)) {
+
+                        $this->content = $this->update($token2);
+                    } else {
+
+                        if (method_exists($this, $token2)) {
+
+                            //echo(save);
+                            $this->content = $this->{$token2}(); // chiamo il metodo passandogli il nome as string
+
+                      }
+                  /*else {
+                            $this->content = '<h1> Ooops something went wrong on ' . $token2 . '</h1>';
+                        }*/
+
+
+                    }
+                }
+
+
                 break;
+
+          /*  default:
+                $this->content = $this.page*/
 
         }
 

@@ -1,0 +1,5 @@
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule    ^post/([0-9]+)    index.php    [NC,L]    # Handle requests for "post"
+RewriteRule    ^post/create    index.php    [NC,L]
+RewriteRule    ^post/save    index.php    [NC,L]
+ErrorDocument 404 /404NotFound.html
